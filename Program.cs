@@ -6,66 +6,76 @@ namespace LabSix
     {
         static void Main(string[] args)
         {
-            string userWord;
-            string pigLatinWord;
+            string userText;
+            string pigLatinWord = null;
             string lettersBeforeVowel;
             string lettersFromVowelOn;
             int vowelPosition;
             bool run = true;
-         
+            
+
             Console.WriteLine("Welcome to the Pig Latin Translator!");
             Console.WriteLine("------------------------------------");
             Console.WriteLine();
 
             while (run == true)
             {
+                string translatedSentence = null;
 
                 bool enteredWord = false;
 
                 while (enteredWord == false)
                 {
-                    //Prompt the user for a word to translate
-                    Console.Write("Please enter a word to translate into Pig Latin: ");
-                    userWord = Console.ReadLine();
+                    //Prompt the user for a word or phrase to translate
+                    Console.Write("Please enter something to translate into Pig Latin: ");
+                    userText = Console.ReadLine();
 
-                    //Confirm that the user did actually enter a word to translate. If they didn't enter a word, prompt them again.
-                    if (userWord.Length == 0)
+                    //Confirm that the user did actually enter something to translate. If they didn't enter anything, prompt them again.
+                    if (userText.Length == 0)
                     {
                         Console.WriteLine("I'm sorry, you forgot to type a word.");
                         enteredWord = false;
                     }
-                    //If they did enter a word, convert it to pig latin
+                    //If they did enter something, convert it to pig latin
                     else
                     {                     
                         enteredWord = true;
-                        vowelPosition = FindVowel(userWord);
 
-                        //If the word starts with a vowel, just add "way" on to the ending
-                        if (vowelPosition == 0)
+                        string[] wordsArray = userText.Split(' ');
+
+                        foreach (string word in wordsArray)
                         {
-                            pigLatinWord = userWord + "way";
+                            vowelPosition = FindVowel(word);
 
-                            Console.WriteLine("Your pig latin word is: " + pigLatinWord);
+                            //If the word starts with a vowel, just add "way" on to the ending
+                            if (vowelPosition == 0)
+                            {
+                                pigLatinWord = word + "way";
+                            }
+                            //If the word starts with a consonant, move all of the consonants that appear before the first vowel to the end of the word and add "ay" to the end
+                            else if (vowelPosition > 0)
+                            {
+                                //Create a substring of the consonants before the first vowel & a substring of the first vowel + all letters after it
+                                lettersBeforeVowel = word.Substring(0, vowelPosition);
+                                lettersFromVowelOn = word.Substring(vowelPosition);
+
+                                //Combine the substrings into a new pig latin string: firstVowelString + consonantsBeforeVowelString + ay
+                                pigLatinWord = lettersFromVowelOn + lettersBeforeVowel + "ay";
+
+                            }
+                            //If there are no vowels, let the user know they may have mis-typed.
+                            else if (vowelPosition == -1)
+                            {
+                                pigLatinWord = word;
+                            }
+
+                            //Add the translated word on to the current sentence
+                            translatedSentence = translatedSentence + " " + pigLatinWord;                          
                         }
-                        //If the word starts with a consonant, move all of the consonants that appear before the first vowel to the end of the word and add "ay" to the end
-                        else if (vowelPosition > 0)
-                        {
-                            //Create a substring of the consonants before the first vowel & a substring of the first vowel + all letters after it
-                            lettersBeforeVowel = userWord.Substring(0, vowelPosition);
-                            lettersFromVowelOn = userWord.Substring(vowelPosition);
 
-                            //Combine the substrings into a new pig latin string: firstVowelString + consonantsBeforeVowelString + ay
-                            pigLatinWord = lettersFromVowelOn + lettersBeforeVowel + "ay";
+                        //Out put their translated text
+                        Console.WriteLine("Your translated text is: " + translatedSentence);
 
-                            //Display the pig latin word to the user
-                            Console.WriteLine("Your pig latin word is: " + pigLatinWord);
-
-                        }
-                        //If there are no vowels, let the user know they may have mis-typed.
-                        else if (vowelPosition == -1)
-                        {
-                            Console.WriteLine("You may have misspelled your word. Your word does not have any vowels in it.");
-                        }
                         //See if they would like to translate another word
                         Console.WriteLine();
                         run = Continue();
