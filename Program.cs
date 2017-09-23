@@ -63,7 +63,7 @@ namespace LabSix
                                 pigLatinWord = lettersFromVowelOn + lettersBeforeVowel + "ay";
 
                             }
-                            //If there are no vowels, let the user know they may have mis-typed.
+                            //If there are no vowels, do not translate (words need vowels!)
                             else if (vowelPosition == -1)
                             {
                                 pigLatinWord = word;
@@ -76,7 +76,7 @@ namespace LabSix
                         //Out put their translated text
                         Console.WriteLine("Your translated text is: " + translatedSentence);
 
-                        //See if they would like to translate another word
+                        //See if they would like to translate something else
                         Console.WriteLine();
                         run = Continue();
                         Console.WriteLine();
@@ -95,7 +95,7 @@ namespace LabSix
             //Change your string into an array of characters
             char[] individualChars = aString.ToCharArray();
 
-            //Check each character to see if it is a vowel. As soon as the first vowel is found, return the index of that vowel.
+            //Check each character to see if it is a vowel. As soon as the first vowel is found, return the index of that vowel. If no vowels are present, return -1.
             for (int i = 0; i <= individualChars.Length - 1; i++)
             {
                 if (individualChars[i] == 'a' || individualChars[i] == 'e' || individualChars[i] == 'i' || individualChars[i] == 'o' || individualChars[i] == 'u')
@@ -109,7 +109,7 @@ namespace LabSix
 
         static bool Continue()
         {
-            Console.Write("Would you like to translate another word (Y/N)? ");
+            Console.Write("Would you like to translate something else (Y/N)? ");
             string input = Console.ReadLine().ToUpper();
             bool doAgain;
             if (input == "Y")
